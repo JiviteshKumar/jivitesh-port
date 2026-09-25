@@ -27,12 +27,12 @@
 <aside class="spine">
   <a class="spine-mark" href="#top" aria-label="Back to top">JK</a>
   <nav aria-label="Chapters">
-    <a href="#idea"><i>01</i> Idea</a>
-    <a href="#work"><i>02</i> Work</a>
-    <a href="#record"><i>03</i> Record</a>
-    <a href="#toolkit"><i>04</i> Toolkit</a>
-    <a href="#hire"><i>05</i> Hire me</a>
-    <a href="#contact"><i>06</i> Contact</a>
+    <a href="#idea"><i>01</i> <span>The idea</span></a>
+    <a href="#work"><i>02</i> <span>Selected work</span></a>
+    <a href="#record"><i>03</i> <span>Track record</span></a>
+    <a href="#toolkit"><i>04</i> <span>Toolkit</span></a>
+    <a href="#hire"><i>05</i> <span>Freelance</span></a>
+    <a href="#contact"><i>06</i> <span>Contact</span></a>
   </nav>
   <div class="spine-foot">
     <div class="meter" aria-hidden="true"><span id="meter"></span></div>
@@ -185,11 +185,8 @@
       <h3>Leo</h3>
       <p class="case-kicker">Chrome extension &middot; built with one teammate</p>
       <div class="case-prose">
-        <p><b>The problem.</b> Most browser work people hate is the same dozen clicks every month &mdash; an invoice off a portal, a form, a report. AI browser agents can do it, but they re-think every step on every run: slow, unpredictable, and expensive at any volume.</p>
-        <p><b>The hard bit.</b> Websites change. A recording that replays blindly breaks the day a button moves; an agent that reasons through every step never breaks but never gets cheap. The job is getting the reliability of one at the cost of the other.</p>
-        <p><b>The call we made.</b> You press record and do the task once. Replay is plain code &mdash; no model on a clean run. Each step keeps up to ten ranked selectors &mdash; test IDs, labels, text, anchored paths, shadow-DOM chains &mdash; so a small redesign usually just falls through to the next one. Only when every selector misses does AI step in: a cheap text-only match first, a vision agent only if that comes back low-confidence. The repaired step is saved back as code, so the next run is deterministic again. For things that change each run, you write an AI step in plain words: &ldquo;pick last month in the date picker.&rdquo;</p>
-        <p><b>My part.</b> My teammate built the first prototype &mdash; the recorder, workflow saving, login, and the first AI step for failed runs. I rebuilt the engine for reliability: trusted input through the Chrome DevTools Protocol, actionability waits, cross-origin iframes, navigation, download and tab handling, hover menus, drag and drop, and per-step run logs with failure screenshots. I also moved every AI call behind authenticated, rate-limited server routes so the extension never holds an API key, and added a provider layer across Anthropic Claude and Groq&rsquo;s GPT-OSS-120B.</p>
-        <p><b>Where it runs.</b> In your own browser, with your existing logins &mdash; no handing over passwords, no bot blocking. Passwords and files are never stored; Leo pauses and lets you type them. A web app gives each user an account and syncs workflows across devices.</p>
+        <p><b>What it is.</b> You record a browser task once &mdash; pulling an invoice off a portal, filing a form &mdash; and Leo replays it as plain code. No model runs on a clean run, so it stays fast, predictable and almost free. AI steps in only when a site has changed: it finds the moved element, repairs the step, and saves the fix back as code.</p>
+        <p><b>My part.</b> A teammate built the first prototype. I rebuilt the replay engine for reliability, and moved every AI call behind authenticated, rate-limited server routes so the extension never holds an API key.</p>
       </div>
       <ul class="metrics">
         <li><span>AI calls, clean run</span><b>0</b></li>
@@ -198,17 +195,15 @@
         <li><span>Live-model tests</span><b>3/3</b></li>
       </ul>
 
-      <div class="roadmap">
-        <p class="roadmap-head">Where it's going</p>
-        <ol>
-          <li><b>Gets itself unstuck.</b> Smarter self-repair, and a &ldquo;show me&rdquo; mode &mdash; when Leo can't do a step, you do it once and it learns it and carries on.</li>
-          <li><b>Real workflows.</b> Inputs that change per run, one workflow over a spreadsheet of rows, data pulled off pages into CSV or Google Sheets, loops, conditions, and a secure vault.</li>
-          <li><b>Runs without you.</b> Scheduled cloud runs on EU and Asia servers, triggered by API or by assistants like Claude, ChatGPT and Grok. CAPTCHAs and 2FA codes go to you on WhatsApp, Telegram or Teams.</li>
-          <li><b>Launch in Asia and Europe.</b> EU hosting and GDPR, a translated interface, a security review, Chrome and Edge store listings, templates for local sites like GST, VAT and SAP &mdash; then pricing well under cloud-only agents, because most runs use no AI at all.</li>
-        </ol>
-      </div>
-
-      <p class="pull">Teach your browser a task once, and it keeps doing it &mdash; reliably, cheaply, with AI only when something changes.</p>
+      <details class="more">
+        <summary>How it holds up</summary>
+        <div class="more-body">
+          <p><b>The hard bit.</b> A recording that replays blindly breaks the day a button moves; an agent that reasons through every step never breaks but never gets cheap. Each step keeps up to ten ranked selectors, so a small redesign usually falls through to the next one. Only when every selector misses does AI step in &mdash; a cheap text match first, a vision agent only on low confidence.</p>
+          <p><b>Reliability work.</b> Trusted input through the Chrome DevTools Protocol, actionability waits, cross-origin iframes, navigation, download and tab handling, hover menus, drag and drop, and per-step run logs with failure screenshots.</p>
+          <p><b>Where it runs.</b> In your own browser with your existing logins, so there are no passwords to hand over and none are stored. A web app syncs workflows across devices.</p>
+          <p><b>Where it's going.</b> Self-repair that gets itself unstuck, inputs that change per run, one workflow over a spreadsheet, then scheduled cloud runs on EU and Asia servers and Chrome and Edge store listings.</p>
+        </div>
+      </details>
 
       <ul class="tags">
         <li>TypeScript</li><li>Chrome MV3 &middot; WXT</li><li>React</li><li>Next.js</li>
@@ -227,9 +222,8 @@
       <h3>Venture Flow</h3>
       <p class="case-kicker">AI due diligence for pitch decks</p>
       <div class="case-prose">
-        <p><b>The problem.</b> Early-stage diligence is weeks of a human reading decks, chasing founder names, and writing the same risk memo again. The reading is not the valuable part &mdash; the judgement is.</p>
-        <p><b>The hard bit.</b> Pitch decks are hostile input: multi-column layouts, five file formats, team slides where the names are images. Getting clean, ordered text out of a PDF exported from Keynote is most of the real work.</p>
-        <p><b>The call I made.</b> Reconstruct layout order before the model ever sees the text, run analysis as a background job instead of pretending it's instant, and attach a confidence score to every risk so the output invites disagreement instead of blind trust. Founders are pulled off the team slide for checking against public sources, and follow-up questions run through a chat interface.</p>
+        <p><b>What it is.</b> Early-stage diligence is weeks of reading decks and writing the same risk memo again. Venture Flow reads the deck instead: it reconstructs the layout before any model sees the text, runs the analysis as a background job, and returns a risk assessment with a confidence score on every line.</p>
+        <p><b>The hard bit.</b> Pitch decks are hostile input &mdash; multi-column layouts, five file formats, team slides where the names are images. Getting clean, ordered text out of them is most of the real work.</p>
       </div>
       <ul class="metrics">
         <li><span>Analysis run</span><b>2&ndash;4<i>min</i></b></li>
@@ -255,9 +249,8 @@
       <h3>Intelligent ICU Management</h3>
       <p class="case-kicker">Mum Hacks &middot; 17-hour overnight build</p>
       <div class="case-prose">
-        <p><b>The pitch.</b> An adaptive multi-agent system forecasting ICU and oxygen demand across Tier-2 and Tier-3 hospitals in India &mdash; six coordinated agents for data ingestion, forecasting, resource optimisation, logistics, multilingual alerts, and feedback learning.</p>
-        <p><b>What shipped.</b> The clinician-facing product: landing, login, dashboard, reports and settings, as a React and TypeScript single-page app on Builder.io's Fusion starter, generated with its AI app builder. Seventeen commits between 5:41&nbsp;pm and 10:33&nbsp;am.</p>
-        <p><b>What stayed a pitch.</b> The six agents. The overnight window went into making the interface real enough to demo; the agent architecture was presented, not built.</p>
+        <p><b>The pitch.</b> A six-agent system forecasting ICU and oxygen demand across Tier-2 and Tier-3 hospitals in India &mdash; ingestion, forecasting, resource optimisation, logistics, multilingual alerts and feedback learning.</p>
+        <p><b>What shipped, and what didn't.</b> The clinician-facing product: five pages as a React and TypeScript app, built on Builder.io's AI app builder in a 17-hour overnight window. The six agents stayed a pitch; the time went into making the interface real enough to demo.</p>
       </div>
       <ul class="metrics">
         <li><span>Build window</span><b>17<i>h</i></b></li>
@@ -318,7 +311,12 @@
           <li><span>Fine-tuning</span><b>LoRA &middot; 4-bit</b></li>
         </ul>
 
-        <p class="role-desc note">Summarisation started as prompting a general model. I replaced it with FLAN-T5 Base fine-tuned on historical abuse emails paired with analyst-written summaries &mdash; trained with LoRA and PEFT under 4-bit quantisation to fit GPU memory &mdash; and that fine-tuned model is what ran in production. Evaluation went past loss: outputs were checked by hand against the analysts' own summaries for factual errors, missed IPs, hallucination and completeness.</p>
+        <details class="more">
+          <summary>On the model</summary>
+          <div class="more-body">
+            <p>Summarisation started as prompting a general model. I replaced it with FLAN-T5 Base fine-tuned on historical abuse emails paired with analyst-written summaries &mdash; trained with LoRA and PEFT under 4-bit quantisation to fit GPU memory &mdash; and that fine-tuned model is what ran in production. Evaluation went past loss: outputs were checked by hand against the analysts' own summaries for factual errors, missed IPs, hallucination and completeness.</p>
+          </div>
+        </details>
 
         <ul class="tags">
           <li>Python</li><li>Pandas</li><li>NumPy</li><li>Regex</li><li>OpenPyXL</li>
@@ -386,7 +384,7 @@
 <!-- ── 06 · contact · NIGHT ─────────────────────────────── -->
 <section class="contact night-zone" id="contact" data-night>
   <header class="sec-head">
-    <span class="eyebrow">06 &mdash; The ask</span>
+    <span class="eyebrow">06 &mdash; Contact</span>
     <h2>Let's talk</h2>
   </header>
   <p class="hello"><span class="hello-word" id="helloWord" lang="hi">नमस्ते</span><span class="hello-lang" id="helloLang">Hindi</span></p>

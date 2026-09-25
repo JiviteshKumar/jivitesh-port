@@ -646,64 +646,52 @@
     }
   }
 
-  /* ═══ the object: a knot in the day, a cloud at night ══ */
+  /* ═══ the knot (day) · the cloud (night) ═══════════════ */
   var canvas = $('#field');
   var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var W = 0, H = 0, N = fine ? 620 : 360;
-  var knot = [], cloud = [], curve = [], alpha = [];
-  var spin = 0;
+  var W = 0, H = 0;
 
-  function knotPoint(t) {             // a (2,3) torus knot, roughly unit radius
+  /* night: the same ambient cloud as before */
+  var CLOUD_N = 360, cloud = [], cAlpha = [], spin = 0;
+  var knot = [], curve = [], kAlpha = [];
+  function knotPoint(t) {              // a (2,3) torus knot, roughly unit radius
     var r = Math.cos(3 * t) + 2.2;
     return [r * Math.cos(2 * t) / 3.2, r * Math.sin(2 * t) / 3.2, -Math.sin(3 * t) * 0.38];
   }
+
   function seedField() {
-    for (var i = 0; i < N; i++) {
-      var kp = knotPoint((i / N) * Math.PI * 2), j = 0.16;
-      knot.push([kp[0] + (Math.random() - 0.5) * j, kp[1] + (Math.random() - 0.5) * j, kp[2] + (Math.random() - 0.5) * j]);
-      var u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, s = Math.sqrt(1 - u * u), rr = 0.82 + Math.random() * 0.34;
+    for (var i = 0; i < CLOUD_N; i++) {
+      var u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
+      var s = Math.sqrt(1 - u * u), rr = 0.82 + Math.random() * 0.34;
       cloud.push([s * Math.cos(th) * rr, u * rr, s * Math.sin(th) * rr]);
-      alpha.push(0.3 + Math.random() * 0.7);
+      cAlpha.push(0.3 + Math.random() * 0.7);
+      var kp = knotPoint((i / CLOUD_N) * Math.PI * 2), jit = 0.16;
+      knot.push([kp[0] + (Math.random() - 0.5) * jit, kp[1] + (Math.random() - 0.5) * jit, kp[2] + (Math.random() - 0.5) * jit]);
+      kAlpha.push(0.3 + Math.random() * 0.7);
     }
-    for (var c = 0; c <= 260; c++) curve.push(knotPoint((c / 260) * Math.PI * 2));
+    for (var c2 = 0; c2 <= 260; c2++) curve.push(knotPoint((c2 / 260) * Math.PI * 2));
   }
   function sizeField() {
-    if (!canvas) return;
-    W = canvas.width = Math.max(1, Math.floor(vw * dpr));
-    H = canvas.height = Math.max(1, Math.floor(vh * dpr));
+    if (canvas) {
+      W = canvas.width = Math.max(1, Math.floor(vw * dpr));
+      H = canvas.height = Math.max(1, Math.floor(vh * dpr));
+    }
   }
-  function drawField(dt) {
-    if (!ctx || lightweight) return;
-    ctx.clearRect(0, 0, W, H);
-    if (reduce) return;
 
-    var heroP = S.y < vh * 1.1 ? 1 - ramp(S.y, 0, vh * 0.85) : 0;
-    var nightP = nightAmt;
-    if (heroP < 0.01 && nightP < 0.01) return;
-
+  function drawCloud(dt, p) {
     spin += dt * 0.00016 * (1 + Math.min(Math.abs(S.v) * 0.12, 5)) * S.dir;
     var tx = fine ? (M.sy / vh - 0.5) * 0.7 : 0.18;
     var ty = fine ? (M.sx / vw - 0.5) * 0.9 : 0;
     var a = spin + ty, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(tx), sb = Math.sin(tx);
     var narrow = vw < 860;
+    var cx = W * (narrow ? 0.5 : 0.87), cy = H * 0.5;
+    var R = Math.min(W, H) * (narrow ? 0.34 : 0.27);
+    var scale = 1 + (1 - p) * 1.6, FOV = 2.6, o = [0, 0, 0];
     var mx = M.sx * dpr, my = M.sy * dpr, rep = (fine && M.on) ? 120 * dpr : 0;
 
-    var knotMode = heroP >= nightP;
-    var pres = knotMode ? heroP * (narrow ? 0.5 : 1) : nightP;
-    var cx, cy, R, pts, scale, rgb;
-    if (knotMode) {
-      cx = W * (narrow ? 0.66 : 0.76); cy = H * (narrow ? 0.26 : 0.30);
-      R = Math.min(W, H) * (narrow ? 0.26 : 0.25);
-      scale = 1 + (1 - heroP) * 2.4; pts = knot; rgb = '22,23,27';
-    } else {
-      cx = W * (narrow ? 0.5 : 0.8); cy = H * 0.5; R = Math.min(W, H) * (narrow ? 0.34 : 0.27);
-      scale = 1 + (1 - nightP) * 1.6; pts = cloud; rgb = '109,135,255';
-    }
-    var FOV = 2.6, o = [0, 0, 0];
-
-    function project(p) {
-      var x = p[0], y = p[1], z = p[2];
+    function project(q) {
+      var x = q[0], y = q[1], z = q[2];
       var x1 = x * ca - z * sa, z1 = x * sa + z * ca;
       var y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
       var d = Math.min(1.6, FOV / (FOV + z2));
@@ -716,7 +704,64 @@
         }
       }
     }
+    for (var i = 0; i < cloud.length; i++) {
+      project(cloud[i]);
+      var al = cAlpha[i] * o[2] * o[2] * (narrow ? 0.4 : 0.45) * p;
+      if (al < 0.01) continue;
+      ctx.fillStyle = 'rgba(109,135,255,' + al.toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.arc(o[0], o[1], Math.max(0.5, o[2] * 1.5 * dpr), 0, 6.2832);
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, R * 1.22, R * 0.3, 0, 0, 6.2832);
+    ctx.strokeStyle = 'rgba(109,135,255,' + (0.13 * p).toFixed(3) + ')';
+    ctx.lineWidth = dpr;
+    ctx.stroke();
+  }
 
+  function drawField(dt) {
+    if (!ctx || lightweight) return;
+    ctx.clearRect(0, 0, W, H);
+    if (reduce) return;
+    var heroP = S.y < vh * 1.1 ? 1 - ramp(S.y, 0, vh * 0.85) : 0;
+    var nightP = nightAmt;
+    if (heroP < 0.01 && nightP < 0.01) return;
+
+    spin += dt * 0.00016 * (1 + Math.min(Math.abs(S.v) * 0.12, 5)) * S.dir;
+    var tx = fine ? (M.sy / vh - 0.5) * 0.7 : 0.18;
+    var ty = fine ? (M.sx / vw - 0.5) * 0.9 : 0;
+    var a = spin + ty, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(tx), sb = Math.sin(tx);
+    var narrow = vw < 960;
+    var mx = M.sx * dpr, my = M.sy * dpr, rep = (fine && M.on) ? 120 * dpr : 0;
+
+    var knotMode = heroP >= nightP;
+    var pres = knotMode ? heroP * (narrow ? 0.45 : 1) : nightP;
+    var cx, cy, R, pts, alp, scale, rgb;
+    if (knotMode) {                     // the rotating knot, back where it started
+      cx = W * (narrow ? 0.66 : 0.76); cy = H * (narrow ? 0.26 : 0.30);
+      R = Math.min(W, H) * (narrow ? 0.26 : 0.25);
+      scale = 1 + (1 - heroP) * 2.4; pts = knot; alp = kAlpha; rgb = '22,23,27';
+    } else {
+      cx = W * (narrow ? 0.5 : 0.87); cy = H * 0.5;
+      R = Math.min(W, H) * (narrow ? 0.34 : 0.27);
+      scale = 1 + (1 - nightP) * 1.6; pts = cloud; alp = cAlpha; rgb = '109,135,255';
+    }
+    var FOV = 2.6, o = [0, 0, 0];
+    function project(q) {
+      var x = q[0], y = q[1], z = q[2];
+      var x1 = x * ca - z * sa, z1 = x * sa + z * ca;
+      var y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
+      var d = Math.min(1.6, FOV / (FOV + z2));
+      o[0] = cx + x1 * R * d * scale; o[1] = cy + y1 * R * d * scale; o[2] = d;
+      if (rep) {
+        var dx = o[0] - mx, dy = o[1] - my, dd = dx * dx + dy * dy;
+        if (dd < rep * rep && dd > 1) {
+          var dl = Math.sqrt(dd), f = (1 - dl / rep) * 34 * dpr;
+          o[0] += dx / dl * f; o[1] += dy / dl * f;
+        }
+      }
+    }
     if (knotMode) {
       ctx.beginPath();
       for (var c = 0; c < curve.length; c++) {
@@ -724,12 +769,11 @@
         if (c === 0) ctx.moveTo(o[0], o[1]); else ctx.lineTo(o[0], o[1]);
       }
       ctx.strokeStyle = 'rgba(' + rgb + ',' + (0.22 * pres * pres).toFixed(3) + ')';
-      ctx.lineWidth = dpr;
-      ctx.stroke();
+      ctx.lineWidth = dpr; ctx.stroke();
     }
     for (var i = 0; i < pts.length; i++) {
       project(pts[i]);
-      var al = alpha[i] * o[2] * o[2] * (knotMode ? 0.75 : (narrow ? 0.4 : 0.6)) * pres;
+      var al = alp[i] * o[2] * o[2] * (knotMode ? 0.75 : (narrow ? 0.4 : 0.45)) * pres;
       if (al < 0.01) continue;
       ctx.fillStyle = 'rgba(' + rgb + ',' + al.toFixed(3) + ')';
       ctx.beginPath();
@@ -740,8 +784,7 @@
       ctx.beginPath();
       ctx.ellipse(cx, cy, R * 1.22, R * 0.3, 0, 0, 6.2832);
       ctx.strokeStyle = 'rgba(' + rgb + ',' + (0.13 * pres).toFixed(3) + ')';
-      ctx.lineWidth = dpr;
-      ctx.stroke();
+      ctx.lineWidth = dpr; ctx.stroke();
     }
   }
 
@@ -767,7 +810,7 @@
   /* ── one loop: read everything, then write everything ─ */
   var last = performance.now();
   function frame(now) {
-    var dt = Math.min(64, (now - last) || 16);
+    var dt = Math.min(64, Math.max(0, now - last) || 16);   // never let a clock hiccup go negative
     last = now;
 
     S.y = window.scrollY;

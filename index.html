@@ -53,7 +53,7 @@
   <div class="hero-grid">
     <div data-depth="0.55">
       <p class="lead">I build AI systems that use the model only where it earns its place &mdash; regex before the LLM, recorded code before the agent, clean parsing before the prompt.</p>
-      <p class="lead dim">Final-year B.Tech IT at KJ Somaiya, Mumbai. Two internships in: AI/ML at Tata Teleservices, and research and AI product work at DigiGo.</p>
+      <p class="lead dim">Final-year B.Tech IT at KJ Somaiya, Mumbai. Two internships behind me &mdash; AI/ML at Tata Teleservices, AI product work at DigiGo.</p>
     </div>
     <dl class="hero-meta" data-depth="0.3">
       <div><dt>Focus</dt><dd>AI systems &amp; data analysis</dd></div>
@@ -100,23 +100,23 @@
       <ol class="captions">
         <li class="cap on" data-frame="0">
           <span class="cap-no">Frame 01 &middot; Input</span>
-          <h3>Messy, and a thousand of it</h3>
-          <p>Abuse reports arrive as HTML, PDFs, CSVs and forwarded chains, wrapped in signatures and legal disclaimers. At Tata Teleservices it was over a thousand a day, each one opened and read by hand.</p>
+          <h3>A thousand a day, all messy</h3>
+          <p>Abuse reports arrive as HTML, PDFs, CSVs and forwarded chains. At Tata Teleservices there were over a thousand a day, and every one was read by hand.</p>
         </li>
         <li class="cap" data-frame="1">
           <span class="cap-no">Frame 02 &middot; Extract</span>
           <h3>Deterministic where it matters</h3>
-          <p>IPs, ASNs, URLs and timestamps come out by regex before any model sees the text. The fields a security team acts on never depend on a summariser getting them right.</p>
+          <p>IPs, ASNs, URLs and timestamps come out by regex, before any model sees the text. The fields a security team acts on never depend on a summary being right.</p>
         </li>
         <li class="cap" data-frame="2">
           <span class="cap-no">Frame 03 &middot; Model</span>
           <h3>AI only where it earns its place</h3>
-          <p>The model gets clean text and pinned facts, and does the one thing code can't: write the judgement. Leo works the same way &mdash; plain-code replay, and a model only when a site has changed.</p>
+          <p>The model gets clean text and pinned facts, then writes the one thing code can't: the judgement.</p>
         </li>
         <li class="cap" data-frame="3">
           <span class="cap-no">Frame 04 &middot; Output</span>
           <h3>Honest about what it knows</h3>
-          <p>Every report becomes a structured incident in one format, from a model checked by hand against analysts' own summaries for missed IPs and hallucinations. Venture Flow does the same with a confidence score on every risk.</p>
+          <p>Every report lands as a structured incident in one format. I checked the summaries by hand against the analysts' own, looking for missed IPs and invented detail.</p>
         </li>
       </ol>
 
@@ -183,10 +183,10 @@
     <div class="case-no"><span>01</span><span class="case-state live"><i aria-hidden="true"></i>Active</span><span class="case-state">In development</span><span class="case-year">2026</span></div>
     <div class="case-body">
       <h3>Leo</h3>
-      <p class="case-kicker">Chrome extension &middot; built with one teammate</p>
+      <p class="case-kicker">Chrome extension &middot; records and replays browser work</p>
       <div class="case-prose">
-        <p><b>What it is.</b> You record a browser task once &mdash; pulling an invoice off a portal, filing a form &mdash; and Leo replays it as plain code. No model runs on a clean run, so it stays fast, predictable and almost free. AI steps in only when a site has changed: it finds the moved element, repairs the step, and saves the fix back as code.</p>
-        <p><b>My part.</b> A teammate built the first prototype. I rebuilt the replay engine for reliability, and moved every AI call behind authenticated, rate-limited server routes so the extension never holds an API key.</p>
+        <p><b>What it is.</b> You record a browser task once &mdash; pulling an invoice off a portal, filing a form &mdash; and Leo replays it as plain code. No model runs unless the site has changed, so it stays fast and nearly free.</p>
+        <p><b>Under the hood.</b> I rebuilt the replay engine, and moved every AI call behind authenticated, rate-limited server routes, so the extension never holds an API key.</p>
       </div>
       <ul class="metrics">
         <li><span>AI calls, clean run</span><b>0</b></li>
@@ -198,21 +198,42 @@
       <details class="more">
         <summary>How it holds up</summary>
         <div class="more-body">
-          <p><b>The hard bit.</b> A recording that replays blindly breaks the day a button moves; an agent that reasons through every step never breaks but never gets cheap. Each step keeps up to ten ranked selectors, so a small redesign usually falls through to the next one. Only when every selector misses does AI step in &mdash; a cheap text match first, a vision agent only on low confidence.</p>
-          <p><b>Reliability work.</b> Trusted input through the Chrome DevTools Protocol, actionability waits, cross-origin iframes, navigation, download and tab handling, hover menus, drag and drop, and per-step run logs with failure screenshots.</p>
-          <p><b>Where it runs.</b> In your own browser with your existing logins, so there are no passwords to hand over and none are stored. A web app syncs workflows across devices.</p>
-          <p><b>Where it's going.</b> Self-repair that gets itself unstuck, inputs that change per run, one workflow over a spreadsheet, then scheduled cloud runs on EU and Asia servers and Chrome and Edge store listings.</p>
+          <p><b>The hard bit.</b> A recording that replays blindly breaks the day a button moves; an agent that reasons through every step never breaks but never gets cheap. Each step keeps up to ten ranked selectors, so a small redesign usually falls through to the next one. Only when every selector misses does AI step in, find the moved element, repair the step and save the fix back as code.</p>
+          <p><b>Where it runs.</b> In your own browser, with your existing logins. There are no passwords to hand over and none are stored.</p>
+          <p><b>Next.</b> Self-repair that gets itself unstuck, inputs that change per run, then scheduled cloud runs and store listings.</p>
         </div>
       </details>
 
       <ul class="tags">
-        <li>TypeScript</li><li>Chrome MV3 &middot; WXT</li><li>React</li><li>Next.js</li>
-        <li>Neon &middot; Drizzle</li><li>better-auth</li><li>Bun</li><li>Playwright</li><li>Claude &middot; Groq</li>
+        <li>TypeScript</li><li>Chrome MV3</li><li>React &middot; Next.js</li><li>Playwright</li><li>Claude &middot; Groq</li>
       </ul>
       <p class="case-links">
         <a href="https://github.com/JiviteshKumar/leo_update" target="_blank" rel="noopener">Source &#8599;</a>
       </p>
     </div>
+    <figure class="case-media" aria-hidden="true">
+      <div class="demo demo-leo">
+        <p class="d-bar"><i></i><i></i><i></i><span>portal.example/invoices</span></p>
+        <div class="d-body">
+          <ol class="d-steps">
+            <li style="--i:0"><em>01</em> click <code>#invoices</code></li>
+            <li style="--i:1"><em>02</em> type <code>2026-09</code></li>
+            <li style="--i:2"><em>03</em> click <code>.download</code></li>
+          </ol>
+          <p class="d-run"><span class="d-dot"></span>replaying as code</p>
+          <div class="d-repair">
+            <p class="d-alert">the button moved</p>
+            <ol class="d-sel">
+              <li style="--i:0"><code>.download</code></li>
+              <li style="--i:1"><code>button.primary</code></li>
+              <li style="--i:2"><code>[data-act="dl"]</code></li>
+            </ol>
+            <p class="d-fix">repaired &rarr; saved back as code</p>
+          </div>
+        </div>
+      </div>
+      <figcaption>A run, in schematic: replay, then repair.</figcaption>
+    </figure>
   </article>
 
   <!-- Venture Flow -->
@@ -222,8 +243,8 @@
       <h3>Venture Flow</h3>
       <p class="case-kicker">AI due diligence for pitch decks</p>
       <div class="case-prose">
-        <p><b>What it is.</b> Early-stage diligence is weeks of reading decks and writing the same risk memo again. Venture Flow reads the deck instead: it reconstructs the layout before any model sees the text, runs the analysis as a background job, and returns a risk assessment with a confidence score on every line.</p>
-        <p><b>The hard bit.</b> Pitch decks are hostile input &mdash; multi-column layouts, five file formats, team slides where the names are images. Getting clean, ordered text out of them is most of the real work.</p>
+        <p><b>What it is.</b> Venture Flow reads a pitch deck and returns a risk assessment with a confidence score on every line &mdash; work that otherwise means weeks of reading decks and rewriting the same memo.</p>
+        <p><b>The hard bit.</b> Pitch decks are hostile input &mdash; five file formats, multi-column layouts, team slides where the names are images. Getting clean text out of them is most of the work.</p>
       </div>
       <ul class="metrics">
         <li><span>Analysis run</span><b>2&ndash;4<i>min</i></b></li>
@@ -232,37 +253,99 @@
         <li><span>Every risk</span><b>Scored</b></li>
       </ul>
       <ul class="tags">
-        <li>React 18</li><li>Next.js</li><li>TypeScript</li><li>Vite</li><li>Tailwind</li>
-        <li>Python</li><li>FastAPI</li><li>Groq</li><li>PostgreSQL / Neon</li>
+        <li>React &middot; Next.js</li><li>TypeScript</li><li>Python &middot; FastAPI</li><li>Groq</li><li>PostgreSQL</li>
       </ul>
       <p class="case-links">
         <a href="https://venture-flow-livid.vercel.app" target="_blank" rel="noopener">Live &#8599;</a>
         <a href="https://github.com/JiviteshKumar/venture_flow" target="_blank" rel="noopener">Source &#8599;</a>
       </p>
     </div>
+    <figure class="case-media" aria-hidden="true">
+      <div class="demo demo-vf">
+        <div class="vf-screen">
+
+          <div class="vf-stage" style="--i:0">
+            <span class="vf-slide b2"></span>
+            <span class="vf-slide b1"></span>
+            <span class="vf-slide top">
+              <i class="vf-t" style="--j:0;--w:72%"></i><i class="vf-t" style="--j:1;--w:46%"></i>
+              <i class="vf-t r" style="--j:2;--w:58%"></i><i class="vf-t r" style="--j:3;--w:80%"></i>
+              <i class="vf-t" style="--j:4;--w:64%"></i><i class="vf-t r" style="--j:5;--w:40%"></i>
+            </span>
+          </div>
+
+          <div class="vf-stage" style="--i:1">
+            <ol class="vf-lines">
+              <li style="--j:0"><em>1</em><i style="--w:88%"></i></li>
+              <li style="--j:1"><em>2</em><i style="--w:72%"></i></li>
+              <li style="--j:2"><em>3</em><i style="--w:94%"></i></li>
+              <li style="--j:3"><em>4</em><i style="--w:66%"></i></li>
+              <li style="--j:4"><em>5</em><i style="--w:81%"></i></li>
+            </ol>
+          </div>
+
+          <div class="vf-stage" style="--i:2">
+            <ul class="vf-risks">
+              <li style="--j:0"><span>Market</span><i style="--p:.78"></i></li>
+              <li style="--j:1"><span>Team</span><i style="--p:.52"></i></li>
+              <li style="--j:2"><span>Traction</span><i style="--p:.67"></i></li>
+            </ul>
+          </div>
+
+        </div>
+        <p class="vf-cap">
+          <span style="--i:0">deck in &middot; 5 formats</span>
+          <span style="--i:1">layout reconstructed</span>
+          <span style="--i:2">every risk scored</span>
+        </p>
+      </div>
+      <figcaption>How a run moves, in schematic. Illustrative figures.</figcaption>
+    </figure>
   </article>
 
-  <!-- Mum Hacks -->
-  <article class="case compact">
-    <div class="case-no"><span>03</span><span class="case-state">Hackathon</span><span class="case-year">2025</span></div>
+  <!-- sudo -->
+  <article class="case">
+    <div class="case-no"><span>03</span><span class="case-state live"><i aria-hidden="true"></i>Active</span><span class="case-year">2026</span></div>
     <div class="case-body">
-      <h3>Intelligent ICU Management</h3>
-      <p class="case-kicker">Mum Hacks &middot; 17-hour overnight build</p>
+      <h3>sudo</h3>
+      <p class="case-kicker">Android app &middot; tech news, jobs and a skills radar</p>
       <div class="case-prose">
-        <p><b>The pitch.</b> A six-agent system forecasting ICU and oxygen demand across Tier-2 and Tier-3 hospitals in India &mdash; ingestion, forecasting, resource optimisation, logistics, multilingual alerts and feedback learning.</p>
-        <p><b>What shipped, and what didn't.</b> The clinician-facing product: five pages as a React and TypeScript app, built on Builder.io's AI app builder in a 17-hour overnight window. The six agents stayed a pitch; the time went into making the interface real enough to demo.</p>
+        <p><b>What it is.</b> Tech, AI and data news from vetted outlets, with jobs scored against your r&eacute;sum&eacute;. The summaries are written on the phone by a model I trained, which picks the article&rsquo;s own sentences word for word &mdash; so it cannot invent a fact the publisher never wrote.</p>
+        <p><b>The hard bit.</b> Nothing in the Skills Radar is hardcoded. A term only appears if publication counts show it took off in the last three years, at least five arXiv papers mention it in the last month, and it can be explained by quoting a linked source.</p>
       </div>
       <ul class="metrics">
-        <li><span>Build window</span><b>17<i>h</i></b></li>
-        <li><span>Commits</span><b>17</b></li>
-        <li><span>Pages shipped</span><b>5</b></li>
-        <li><span>Agents designed</span><b>6</b></li>
+        <li><span>Summaries</span><b>On&#8209;device</b></li>
+        <li><span>Model weights</span><b>530</b></li>
+        <li><span>ROUGE-1 vs lead</span><b>28.4<i>/27.4</i></b></li>
+        <li><span>Refresh</span><b>15<i>min</i></b></li>
       </ul>
-      <ul class="tags"><li>React</li><li>TypeScript</li><li>Vite</li><li>Tailwind</li><li>Radix UI</li><li>Express</li><li>Builder.io</li></ul>
+
+      <details class="more">
+        <summary>On the summariser</summary>
+        <div class="more-body">
+          <p>Each sentence gets twenty features &mdash; position, TextRank score, title overlap, attribution, numbers &mdash; and a 24-unit network scores how likely it belongs in the summary. The app then prints the winning sentences verbatim, in their original order, inside a fifty-word budget. Because it never generates text, it cannot hallucinate.</p>
+          <p>It was trained on CNN/DailyMail paired with publisher-written highlights, plus articles from the app&rsquo;s own feeds paired with each publisher&rsquo;s summary line, filtered for references the article text does not support. On the held-out tech set it scores 28.4 ROUGE-1 against 27.4 for the lead baseline and 24.9 for TextRank, at the same word budget.</p>
+        </div>
+      </details>
+
+      <ul class="tags">
+        <li>Kotlin</li><li>Jetpack Compose</li><li>Room &middot; WorkManager</li><li>On-device ML</li><li>Gemini API</li>
+      </ul>
       <p class="case-links">
-        <a href="https://github.com/JiviteshKumar/Mum_Hacks" target="_blank" rel="noopener">Source &#8599;</a>
+        <a href="https://github.com/JiviteshKumar/sudo" target="_blank" rel="noopener">Source &#8599;</a>
       </p>
     </div>
+    <figure class="case-media">
+      <div class="phone">
+        <span class="phone-notch" aria-hidden="true"></span>
+        <div class="phone-screen">
+          <img class="shot" style="--i:0" src="media/sudo/onboarding_dark.webp" alt="sudo onboarding: Tech, distilled." width="420" height="853" loading="lazy" decoding="async">
+          <img class="shot" style="--i:1" src="media/sudo/pulse_dark.webp" alt="sudo Tech Pulse feed with summarised stories" width="420" height="853" loading="lazy" decoding="async">
+          <img class="shot" style="--i:2" src="media/sudo/jobs_dark.webp" alt="sudo jobs list with match scores and skill gaps" width="420" height="853" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <figcaption>Screens from the app itself.</figcaption>
+    </figure>
   </article>
 </section>
 
@@ -282,7 +365,7 @@
       <div>
         <h3>DigiGo LLP</h3>
         <p class="role-title">Intern &middot; on-site</p>
-        <p class="role-desc">DigiGo is an AI SaaS company building identity verification and guest operations infrastructure for the hospitality industry. I helped build its authentication flow and worked on making that whole experience seamless, alongside research, AI product work and client relationships, reporting to a co-founder.</p>
+        <p class="role-desc">DigiGo builds identity verification and guest operations software for hotels. I worked on its authentication flow, alongside research, AI product work and client relationships.</p>
       </div>
     </li>
 
@@ -291,7 +374,7 @@
       <div>
         <h3>Tata Teleservices Limited</h3>
         <p class="role-title">AI/ML Intern &middot; abuse email processing &amp; incident summarisation</p>
-        <p class="role-desc">The cybersecurity team received over a thousand abuse and security reports a day &mdash; IP abuse, phishing, botnets, DDoS alerts, blacklist notices &mdash; and every one was opened, read and triaged by hand, at three to five minutes apiece. I built the pipeline that does the triage: normalise every format to clean text, pull the technical fields out deterministically, summarise with a language model, and log a structured incident for the team. Each report now takes seconds instead of minutes.</p>
+        <p class="role-desc">Over a thousand abuse reports a day were triaged by hand, three to five minutes each. I built the pipeline that does it instead: normalise every format, pull the technical fields out by regex, summarise with a fine-tuned model, log a structured incident. Seconds, not minutes.</p>
 
         <div class="pipeline-wrap">
           <ol class="pipeline" aria-label="Pipeline stages, in order">
@@ -314,13 +397,12 @@
         <details class="more">
           <summary>On the model</summary>
           <div class="more-body">
-            <p>Summarisation started as prompting a general model. I replaced it with FLAN-T5 Base fine-tuned on historical abuse emails paired with analyst-written summaries &mdash; trained with LoRA and PEFT under 4-bit quantisation to fit GPU memory &mdash; and that fine-tuned model is what ran in production. Evaluation went past loss: outputs were checked by hand against the analysts' own summaries for factual errors, missed IPs, hallucination and completeness.</p>
+            <p>Summarisation started as prompting a general model. I replaced it with FLAN-T5 Base, fine-tuned on historical abuse emails paired with analyst-written summaries &mdash; trained with LoRA and PEFT under 4-bit quantisation to fit GPU memory &mdash; and that fine-tuned model is what ran in production. Evaluation went past loss: I checked outputs by hand against the analysts' own summaries for factual errors, missed IPs and invented detail.</p>
           </div>
         </details>
 
         <ul class="tags">
-          <li>Python</li><li>Pandas</li><li>NumPy</li><li>Regex</li><li>OpenPyXL</li>
-          <li>Hugging Face</li><li>FLAN-T5</li><li>LoRA / PEFT</li><li>BitsAndBytes</li><li>Power Automate</li>
+          <li>Python</li><li>Regex</li><li>Hugging Face</li><li>FLAN-T5 &middot; LoRA</li><li>Power Automate</li>
         </ul>
       </div>
     </li>
@@ -344,19 +426,19 @@
   <div class="tk-grid">
     <div class="tk">
       <h3>Models &amp; AI</h3>
-      <ul><li>Python</li><li>Hugging Face Transformers</li><li>FLAN-T5 &middot; BART</li><li>LoRA / PEFT</li><li>4-bit &middot; BitsAndBytes</li><li>Anthropic Claude &middot; Groq</li></ul>
+      <p>Fine-tuning open models in Python, and putting them behind something that stays up.</p>
     </div>
     <div class="tk">
       <h3>Data analysis</h3>
-      <ul><li>Pandas</li><li>NumPy</li><li>Data cleaning &amp; deduplication</li><li>Regex extraction</li><li>Excel &middot; OpenPyXL reporting</li><li>Sentiment &amp; text analysis</li></ul>
+      <p>Cleaning messy data, pulling structure out of text, and reporting what it says.</p>
     </div>
     <div class="tk">
       <h3>Services &amp; automation</h3>
-      <ul><li>FastAPI</li><li>PostgreSQL / Neon &middot; Drizzle</li><li>better-auth</li><li>Power Automate</li><li>Background jobs</li><li>Rate limiting &amp; CORS</li></ul>
+      <p>APIs, databases, background jobs, and the browser and inbox plumbing around them.</p>
     </div>
     <div class="tk">
       <h3>Interface &amp; shipping</h3>
-      <ul><li>React &middot; Next.js</li><li>TypeScript &middot; Tailwind</li><li>Chrome MV3 &middot; WXT</li><li>Chrome DevTools Protocol</li><li>Bun &middot; Playwright</li><li>Vercel &middot; GitHub Pages</li></ul>
+      <p>React and TypeScript front ends, taken through to a deploy.</p>
     </div>
   </div>
 </section>
@@ -368,15 +450,15 @@
     <h2>Work with me</h2>
   </header>
   <div class="hire-grid">
-    <p class="lead">Alongside AI/ML roles, I take a small number of freelance projects. I'm most useful when there's a model somewhere in the middle and nobody has decided what should be code and what should be AI.</p>
+    <p class="lead">Alongside AI/ML roles I take on a few freelance projects. I'm most useful when there's a model in the middle and nobody has decided what should be code and what should be AI.</p>
     <ol class="services">
-      <li><span class="s-no">01</span><h3>AI feature builds</h3><p>A model-backed feature taken from &ldquo;we should try this&rdquo; to something running in your product &mdash; with the parsing, queueing and failure states that make it hold up on the second run, not just the demo.</p></li>
-      <li><span class="s-no">02</span><h3>Browser &amp; inbox automation</h3><p>The repetitive work your team does in portals and inboxes, turned into something that runs itself. The same kind of problem as Leo and the Tata pipeline.</p></li>
-      <li><span class="s-no">03</span><h3>Prototype to product</h3><p>A notebook or a demo that works once, turned into a service with an interface, a database, and a deploy someone else can maintain. React and TypeScript in front, FastAPI behind.</p></li>
+      <li><span class="s-no">01</span><h3>AI feature builds</h3><p>A model-backed feature taken from &ldquo;we should try this&rdquo; to something running in your product, with the failure states that make it hold up past the demo.</p></li>
+      <li><span class="s-no">02</span><h3>Browser &amp; inbox automation</h3><p>The repetitive work your team does in portals and inboxes, turned into something that runs itself.</p></li>
+      <li><span class="s-no">03</span><h3>Prototype to product</h3><p>A notebook or a demo that works once, turned into a service someone else can maintain.</p></li>
     </ol>
   </div>
   <div class="book">
-    <p>Every project is priced on scope, so I don't publish rates. Book a 20-minute call &mdash; tell me what you're trying to get done, and I'll come back with a plan and a quote.</p>
+    <p>Every project is priced on scope, so I don't publish rates. Book a 20-minute call and I'll come back with a plan and a quote.</p>
     <a class="book-btn" href="mailto:jiviteshk32@gmail.com?subject=20-minute%20call%20%E2%80%94%20project%20enquiry&amp;body=Hi%20Jivitesh%2C%0A%0AWhat%20I%27m%20trying%20to%20get%20done%3A%0A%0ARough%20timeline%3A%0A%0AA%20few%20times%20that%20work%20for%20a%2020-minute%20call%3A%0A">Book a 20-min call <span aria-hidden="true">&#8599;</span></a>
   </div>
 </section>
@@ -388,7 +470,7 @@
     <h2>Let's talk</h2>
   </header>
   <p class="hello"><span class="hello-word" id="helloWord" lang="hi">नमस्ते</span><span class="hello-lang" id="helloLang">Hindi</span></p>
-  <p class="contact-lead">Hiring for AI/ML, or have something that should run itself? Mail me. I answer everything.</p>
+  <p class="contact-lead">Are you hiring for AI/ML, or do you have something that should run itself? Mail me &mdash; I answer everything.</p>
   <div class="contact-actions">
     <a class="mail" id="mail" href="mailto:jiviteshk32@gmail.com">jiviteshk32@gmail.com</a>
     <button class="copy" id="copy" type="button">Copy</button>
@@ -399,14 +481,6 @@
     <li><a href="https://github.com/JiviteshKumar" target="_blank" rel="noopener">GitHub &#8599;</a></li>
   </ul>
 </section>
-
-<!-- ── colophon · NIGHT ─────────────────────────────────── -->
-<footer class="night-zone" data-night>
-  <p>Jivitesh Kumar &mdash; <span id="year">2026</span></p>
-  <p>Bricolage Grotesque &middot; Archivo &middot; JetBrains Mono</p>
-  <p>Hand-built in Mumbai. No framework, no template.</p>
-  <p><button class="motion-toggle" type="button" hidden>Motion</button></p>
-</footer>
 
 </main>
 

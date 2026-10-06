@@ -119,13 +119,13 @@ a{ color: inherit; }
 /* ── shared layout ───────────────────────────────────────── */
 main{ position: relative; z-index: 1; }
 
-section, footer{
+section{
   max-width: 1420px; margin-inline: auto;
   padding-inline: var(--pad);
   padding-block: clamp(64px, 10vw, 132px);
 }
 @media (min-width: 1100px){
-  section, footer{ padding-left: var(--rail); }
+  section{ padding-left: var(--rail); }
 }
 
 .sec-head{
@@ -349,6 +349,8 @@ h1 .line:last-child{ color: var(--accent); margin-left: .05em; transition: color
   font-family: var(--mono); font-size: 12px; letter-spacing: .03em;
   color: var(--muted); transition: color var(--swap);
 }
+/* one line of what the group is for, instead of a list of libraries */
+.tk p{ margin: 0; max-width: 34ch; font-size: 14.5px; line-height: 1.55; color: var(--muted); transition: color var(--swap); }
 
 /* ── 05 · hire ───────────────────────────────────────────── */
 .hire-grid{ display: grid; gap: clamp(26px, 4vw, 56px); }
@@ -403,18 +405,6 @@ h1 .line:last-child{ color: var(--accent); margin-left: .05em; transition: color
 .elsewhere a:hover{ color: var(--accent); }
 
 /* ── colophon ────────────────────────────────────────────── */
-footer{
-  padding-block: 26px clamp(38px, 6vw, 70px);
-  border-top: 1px solid var(--line);
-  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px;
-  transition: border-color var(--swap);
-}
-footer p{
-  margin: 0; font-family: var(--mono); font-size: 11px;
-  letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
-  transition: color var(--swap);
-}
-
 /* ── motion & entrance ───────────────────────────────────── */
 /* Everything is visible at rest. Reveal only nudges position. */
 .rise{ transform: translateY(14px); opacity: .001; transition: transform .8s var(--ease), opacity .8s var(--ease); }
@@ -621,8 +611,10 @@ h1.enter.go .ch{ transform: none; transition: transform 1.05s var(--out) calc(va
 
 .captions{ list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(22px, 3vw, 34px); }
 .cap-no{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
-.cap h3{ font-size: clamp(1.5rem, 2.9vw, 2.4rem); line-height: 1; letter-spacing: -.05em; font-weight: 800; margin: 12px 0 14px; text-wrap: balance; }
-.cap p{ color: var(--muted); font-size: 15.5px; line-height: 1.6; max-width: 46ch; }
+.cap > h3{ font-size: clamp(1.5rem, 2.9vw, 2.4rem); line-height: 1; letter-spacing: -.05em; font-weight: 800; margin: 12px 0 14px; text-wrap: balance; }
+/* direct children only — on phones the artwork is cloned inside .cap and must
+   keep its own type and colours */
+.cap > p{ color: var(--muted); font-size: 15.5px; line-height: 1.6; max-width: 46ch; }
 
 .machine-wrap{ margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
 .machine-wrap figcaption{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--muted); text-align: center; max-width: 62ch; }
@@ -750,17 +742,6 @@ h1.enter.go .ch{ transform: none; transition: transform 1.05s var(--out) calc(va
 .story.pinned .cap.on{ opacity: 1; transform: none; }
 .story.pinned .machine{ width: min(100%, 660px, calc((100dvh - 320px) * 1.2222)); }
 .story.pinned .board{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-@media (max-width: 899px){
-  .story.pinned .story-grid{ align-content: start; gap: 18px; }
-  /* phones: crop to the object this frame is about, at readable size */
-  .story.pinned .machine-wrap{ position: relative; display: block; flex: 1; min-height: 30dvh; width: 100%; overflow: hidden; }
-  .story.pinned .machine{ position: absolute; left: 0; top: 0; width: 175%; max-width: none; transform-origin: 0 0; transition: transform .55s var(--out); }
-  .story.pinned .machine-wrap figcaption{ position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 5px 0 3px; background: var(--bg); border-top: 1px solid var(--line); font-size: 9.5px; line-height: 1.35; }
-  .story.pinned .cap p{ font-size: 14px; }
-  .story.pinned .cap h3{ margin: 8px 0 8px; }
-  .frame{ padding: 9px 10px 10px; }
-  .fr-name{ font-size: .85rem; }
-}
 
 /* ── case reading rail ── */
 .case-rail{ display: none; }
@@ -848,18 +829,40 @@ html.calm .split .wi, html.calm h1.enter .ch, html.calm .band-track{ transform: 
 }
 .motion-hint .x{ background: none; border: 0; color: var(--muted); font-size: 18px; line-height: 1; padding: 4px 6px; }
 
-/* ── phones: no pinning. Four frames, stacked, each with its own artwork ── */
+/* ── phones: no pinning. Four frames, stacked, each showing one object ──
+   The desktop machine is one wide composition; cropping a window onto it at
+   phone width put half-cards and empty air on screen. Here each frame drops
+   the composition and shows its own object at full width instead — laid out
+   in flow, so there is nothing to crop and nothing to pan. */
 @media (max-width: 899px){
   .story .machine-wrap{ display: none; }
   .cap-art{
-    position: relative; overflow: hidden; margin-top: 14px;
-    border: 1px solid var(--line); border-radius: .4em; background: var(--surface);
-    aspect-ratio: 4 / 3;
+    margin-top: 16px; padding: 15px 14px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+    transform: translateY(var(--lift, 0));          /* scroll drives this, per frame */
   }
   .cap-art .machine{
-    position: absolute; left: 0; top: 0;
-    width: 175%; max-width: none; transform-origin: 0 0;
+    position: static; width: 100%; max-width: none; aspect-ratio: auto;
+    container-type: normal; display: grid; justify-items: start; gap: 13px;
   }
+  .cap-art .machine > *{ display: none; }                 /* every object off ... */
+  .cap-art .machine > .on{                                /* ... this frame's on  */
+    display: block; position: static;
+    left: auto; top: auto; right: auto; bottom: auto;
+    width: 100%; height: auto; max-width: none;
+    font-size: 16.5px; opacity: 1; transform: none;
+  }
+  .cap-art .machine > .model.on{ display: inline-flex; width: auto; }
+  .cap-art .machine > .count.on{ width: auto; order: -1; }
+
+  /* the frame itself is the card, so the objects inside drop their own chrome */
+  .cap-art .m-card, .cap-art .inc{
+    overflow: visible; padding: 0; border: 0; background: none; box-shadow: none;
+  }
+  .cap-art .m-card p{ margin-bottom: .75em; }
+  .cap-art .json{ box-shadow: none; }
+  .cap-art .json .j, .cap-art .json .br{ white-space: normal; overflow: visible; }
+
   .cap-note{
     margin: 8px 0 0; font-family: var(--mono); font-size: 10px; line-height: 1.4;
     color: var(--muted); max-width: none;
@@ -963,4 +966,157 @@ html[data-ground="night"] .motion-toggle::after, html[data-ground="night"] .copy
   background: linear-gradient(140deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
   border-color: rgba(255,255,255,.22);
   box-shadow: 0 6px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+/* ═══ v5 — a working demo beside each case ═════════════════ */
+
+/* The cases had dead space to the right of the prose on wide screens. Each one
+   now carries a looping demo there: real screens for sudo, a schematic for the
+   two that have no public URL to screenshot. Everything animates only under
+   html.motion, so the Motion toggle and prefers-reduced-motion both stop it. */
+
+.case-media{
+  grid-column: 1 / -1; margin: 30px 0 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 11px;
+}
+.case-media figcaption{
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  color: var(--muted); text-align: center; transition: color var(--swap);
+}
+@media (min-width: 1100px){
+  .case{ grid-template-columns: 92px minmax(0, 1fr) clamp(244px, 22vw, 320px); }
+  .case-media{ grid-column: 3; grid-row: 1; margin: 0; align-self: start; }
+}
+
+/* ── the two schematics share a frame ── */
+.demo{
+  width: 100%; max-width: 330px; padding: 13px 14px 15px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  font-family: var(--mono); font-size: 10.5px; line-height: 1.5;
+  color: var(--muted); transition: background-color var(--swap), border-color var(--swap), color var(--swap);
+}
+.demo code{ font-family: var(--mono); font-size: inherit; color: var(--fg); transition: color var(--swap); }
+
+/* the five entry windows of one 12s loop, so the parts never desync */
+@keyframes dA{ 0%{ opacity:0; transform:translateY(5px) }  4%,95%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+@keyframes dB{ 0%,12%{ opacity:0; transform:translateY(5px) } 17%,95%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+@keyframes dC{ 0%,34%{ opacity:0; transform:translateY(5px) } 39%,95%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+@keyframes dD{ 0%,44%{ opacity:0; transform:translateY(5px) } 49%,95%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+@keyframes dE{ 0%,64%{ opacity:0; transform:translateY(5px) } 69%,95%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+
+/* ── Leo: record, replay, repair ── */
+.d-bar{
+  display: flex; align-items: center; gap: 5px; margin: 0 0 11px; padding-bottom: 9px;
+  border-bottom: 1px solid var(--line); max-width: none; font-size: 9.5px;
+}
+.d-bar i{ width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+.d-bar span{ margin-left: 7px; opacity: .8; }
+.d-steps, .d-sel{ list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.d-steps li, .d-sel li{ display: flex; align-items: baseline; gap: 7px; }
+.d-steps em{ font-style: normal; color: var(--accent); transition: color var(--swap); }
+.d-run{ display: flex; align-items: center; gap: 7px; margin: 11px 0 0; max-width: none; }
+.d-dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+.d-repair{ margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--line); }
+.d-alert{ margin: 0 0 8px; max-width: none; color: var(--sev); }
+.d-sel li{ opacity: .45; }
+.d-sel li:last-child{ opacity: 1; }
+.d-sel li:last-child code{ color: var(--accent); }
+.d-fix{ margin: 10px 0 0; max-width: none; color: var(--accent); }
+
+html.motion .d-steps li{ animation: dA 12s linear infinite; animation-delay: calc(var(--i) * .45s); }
+html.motion .d-run{ animation: dB 12s linear infinite; }
+html.motion .d-alert{ animation: dC 12s linear infinite; }
+html.motion .d-sel li{ animation: dD 12s linear infinite; animation-delay: calc(var(--i) * .5s); }
+html.motion .d-fix{ animation: dE 12s linear infinite; }
+html.motion .d-dot{ animation: pulse 1.1s ease-in-out infinite; }
+
+/* ── Venture Flow: three stages, cross-faded in one frame ──
+   An earlier version animated the parts separately inside a box that sat empty
+   between them. Now each stage owns the whole frame and they hand over, so
+   there is always something on screen. */
+.vf-screen{
+  position: relative; height: 150px; margin-bottom: 11px;
+  border: 1px solid var(--line); border-radius: 9px; overflow: hidden;
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+  transition: border-color var(--swap);
+}
+.vf-stage{ position: absolute; inset: 0; padding: 13px 14px; opacity: 0; }
+.vf-stage:first-child{ opacity: 1; }         /* calm, and before the CSS loads */
+
+/* 1 · a deck, two columns, out of reading order */
+.vf-slide{
+  position: absolute; left: 50%; top: 50%; width: 136px; height: 92px; margin: -46px 0 0 -68px;
+  border-radius: 5px; background: var(--surface); border: 1px solid var(--line);
+  transition: background-color var(--swap), border-color var(--swap);
+}
+.vf-slide.b1{ transform: translate(-7px, -5px) rotate(-5deg); opacity: .5; }
+.vf-slide.b2{ transform: translate(-14px, -10px) rotate(-9deg); opacity: .25; }
+.vf-slide.top{ padding: 10px 9px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; align-content: start; }
+.vf-t{ height: 4px; width: var(--w); border-radius: 2px; background: var(--line); align-self: start; }
+.vf-t.r{ justify-self: end; }
+
+/* 2 · the same text, reconstructed into one ordered column */
+.vf-lines{ list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.vf-lines li{ display: grid; grid-template-columns: 12px 1fr; align-items: center; gap: 8px; }
+.vf-lines em{ font-style: normal; font-size: 9px; color: var(--accent); transition: color var(--swap); }
+.vf-lines i{ height: 4px; width: var(--w); border-radius: 2px; background: var(--line); }
+
+/* 3 · risks, each with a confidence bar */
+.vf-risks{ list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; align-content: center; height: 100%; }
+.vf-risks li{ display: grid; grid-template-columns: 58px 1fr; align-items: center; gap: 10px; }
+.vf-risks span{ font-size: 9.5px; }
+.vf-risks i{ height: 5px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+.vf-risks i::after{
+  content: ""; position: absolute; inset: 0; border-radius: 3px; background: var(--accent);
+  transform-origin: left; transform: scaleX(var(--p));
+}
+
+/* the running caption under the frame */
+.vf-cap{ position: relative; height: 14px; margin: 0; max-width: none; }
+.vf-cap span{ position: absolute; left: 0; top: 0; color: var(--accent); opacity: 0; transition: color var(--swap); }
+.vf-cap span:first-child{ opacity: 1; }
+
+/* one 12s loop, three 4s stages, handing over on a cross-fade */
+@keyframes vfStage{
+  0%, 26%   { opacity: 1; transform: none; }
+  33%, 93%  { opacity: 0; transform: translateY(-5px); }
+  100%      { opacity: 1; transform: none; }
+}
+@keyframes vfType{ 0%,2%{ opacity:0; transform:translateY(3px) } 9%,26%{ opacity:1; transform:none } 32%,100%{ opacity:0 } }
+@keyframes vfSlide{ 0%,32%{ opacity:0; transform:translateX(-9px) } 37%,60%{ opacity:1; transform:none } 64%,100%{ opacity:0 } }
+@keyframes vfFill{ 0%,68%{ transform:scaleX(0) } 80%,100%{ transform:scaleX(var(--p)) } }
+@keyframes vfRow{ 0%,65%{ opacity:0; transform:translateY(4px) } 70%,93%{ opacity:1; transform:none } 99%,100%{ opacity:0 } }
+
+html.motion .vf-stage{ opacity: 0; animation: vfStage 12s ease-in-out infinite; animation-delay: calc(var(--i) * 4s); }
+html.motion .vf-cap span{ opacity: 0; animation: vfStage 12s ease-in-out infinite; animation-delay: calc(var(--i) * 4s); }
+html.motion .vf-t{ animation: vfType 12s ease-out infinite; animation-delay: calc(var(--j) * .16s); }
+html.motion .vf-lines li{ animation: vfSlide 12s var(--out) infinite; animation-delay: calc(var(--j) * .11s); }
+html.motion .vf-risks li{ animation: vfRow 12s var(--out) infinite; animation-delay: calc(var(--j) * .16s); }
+html.motion .vf-risks i::after{ animation: vfFill 12s var(--out) infinite; animation-delay: calc(var(--j) * .22s); }
+
+/* ── sudo: the real screens, in a phone ── */
+.phone{
+  position: relative; width: 100%; max-width: 218px; aspect-ratio: 420 / 853;
+  padding: 6px; border-radius: 26px; background: #0C0D10;
+  border: 1px solid var(--line); box-shadow: 0 18px 44px rgba(12, 13, 16, .3);
+  transition: border-color var(--swap);
+}
+.phone-notch{
+  position: absolute; left: 50%; top: 11px; z-index: 2;
+  width: 54px; height: 5px; margin-left: -27px;
+  border-radius: 4px; background: rgba(255, 255, 255, .14);
+}
+.phone-screen{ position: relative; height: 100%; border-radius: 21px; overflow: hidden; background: #000; }
+.shot{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.shot:first-of-type{ opacity: 1; }      /* calm, and before the CSS loads */
+@keyframes shotCycle{
+  0%, 28%   { opacity: 1; }
+  36%, 94%  { opacity: 0; }
+  100%      { opacity: 1; }
+}
+html.motion .shot{ opacity: 0; animation: shotCycle 10.5s ease-in-out infinite; animation-delay: calc(var(--i) * 3.5s); }
+
+@media (max-width: 1099px){
+  .demo{ max-width: 420px; }
+  .phone{ max-width: 194px; }
 }

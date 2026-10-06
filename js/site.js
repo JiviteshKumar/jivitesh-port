@@ -459,21 +459,9 @@
   var JUMP = [0.14, 0.44, 0.71, 0.94];
   var lastVars = '';
   var phoneStory = window.matchMedia('(max-width: 899px)');
-  // where each frame's subject sits inside the 44x36em stage, as a fraction
-  var FOCUS = [[0.32, 0.33], [0.80, 0.29], [0.31, 0.82], [0.80, 0.73]];
-  function panMachine(idx) {
-    if (!machine) return;
-    if (!phoneStory.matches) { if (machine.style.transform) machine.style.transform = ''; return; }
-    var wrap = machine.parentElement;
-    var cap = $('figcaption', wrap);
-    var ww = wrap.clientWidth, wh = wrap.clientHeight - (cap ? cap.offsetHeight : 0);
-    var mw = machine.offsetWidth, mh = machine.offsetHeight;
-    if (!ww || !mw) return;
-    var f = FOCUS[idx] || FOCUS[0];
-    var tx = clamp(ww / 2 - f[0] * mw, Math.min(0, ww - mw), 0);
-    var ty = clamp(wh / 2 - f[1] * mh, Math.min(0, wh - mh), 0);
-    machine.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
-  }
+  // which object out of the machine each stacked phone frame shows
+  var stacked = [];
+  var PARTS = [['.m-card', '.count'], ['.json'], ['.model', '.sum'], ['.inc']];
   var pinnedStory = false;
   if (story && machine) {
     if (phoneStory.matches) buildStackedStory(); else { story.classList.add('pinned'); pinnedStory = true; }
@@ -481,7 +469,9 @@
     if (phoneStory.addEventListener) phoneStory.addEventListener('change', function () { window.location.reload(); });
   }
 
-  /* phones get the frames stacked: no sticky, no scroll maths, nothing to desync */
+  /* phones get the frames stacked: no sticky, no scroll maths, nothing to desync.
+     Each frame shows one object out of the machine at full width, so nothing is
+     cropped and nothing can drift out of the box. */
   function buildStackedStory() {
     var note = $('figcaption', machine.parentElement);
     caps.forEach(function (cap, i) {
@@ -499,8 +489,13 @@
       m.style.setProperty('--f4', i >= 3 ? '1' : '0');
       if (i >= 1) m.classList.add('s2');
       if (i === 2) m.classList.add('s3');
+      (PARTS[i] || PARTS[0]).forEach(function (sel) {
+        var el = $(sel, m);
+        if (el) el.classList.add('on');
+      });
       art.appendChild(m);
       cap.appendChild(art);
+      stacked.push({ box: art, machine: m, frame: i, sum: $('.sum-text', m), n: -1, k: '' });
       if (i === caps.length - 1 && note) {
         var n = document.createElement('p');
         n.className = 'cap-note';
@@ -508,19 +503,39 @@
         cap.appendChild(n);
       }
     });
-    requestAnimationFrame(panClones);
   }
-  function panClones() {
-    $$('.cap-art').forEach(function (art, i) {
-      var m = art.firstElementChild;
-      if (!m) return;
-      var f = FOCUS[i] || FOCUS[0];
-      var mw = m.offsetWidth, mh = m.offsetHeight;
-      if (!mw || !art.clientWidth) return;
-      var tx = clamp(art.clientWidth / 2 - f[0] * mw, Math.min(0, art.clientWidth - mw), 0);
-      var ty = clamp(art.clientHeight / 2 - f[1] * mh, Math.min(0, art.clientHeight - mh), 0);
-      m.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
-    });
+
+  /* Phones get their scroll animation per frame: every stacked frame reads its
+     own box against the viewport and builds its own artwork from it. No sticky,
+     no vh maths, nothing that a sliding browser bar can desync. */
+  function writeStacked() {
+    for (var i = 0; i < stacked.length; i++) {
+      var it = stacked[i], r = it.box.getBoundingClientRect();
+      if (r.bottom < -60 || r.top > vh + 60) continue;
+      // 0 as the box enters from the bottom, 1 once it has settled up the screen
+      var p = clamp((vh * 0.88 - r.top) / (r.height * 0.55 + vh * 0.28), 0, 1);
+      var e = reduce ? 1 : p;
+      var f = [it.frame >= 0 ? 1 : 1, 0, 0, 0];
+      f[0] = it.frame > 0 ? 1 : e;
+      f[1] = it.frame > 1 ? 1 : it.frame === 1 ? e : 0;
+      f[2] = it.frame > 2 ? 1 : it.frame === 2 ? e : 0;
+      f[3] = it.frame === 3 ? e : 0;
+      var k = f[0].toFixed(2) + f[1].toFixed(2) + f[2].toFixed(2) + f[3].toFixed(2);
+      if (k !== it.k) {
+        it.k = k;
+        var st = it.machine.style;
+        st.setProperty('--f1', f[0].toFixed(3));
+        st.setProperty('--f2', f[1].toFixed(3));
+        st.setProperty('--f3', f[2].toFixed(3));
+        st.setProperty('--f4', f[3].toFixed(3));
+        it.machine.classList.toggle('s3', it.frame === 2 && f[2] > 0.08);
+      }
+      if (it.frame === 2 && it.sum) {                 // the summary types itself out
+        var n = Math.round(ramp(e, 0.2, 0.85) * sumFull.length);
+        if (n !== it.n) { it.n = n; it.sum.textContent = sumFull.slice(0, n); }
+      }
+      it.box.style.setProperty('--lift', (1 - p) * 14 + 'px');
+    }
   }
 
   function writeStory(force) {
@@ -545,7 +560,6 @@
     if (idx !== storyIdx) {
       storyIdx = idx;
       caps.forEach(function (c, i) { c.classList.toggle('on', i === idx); });
-      panMachine(idx);
       frames.forEach(function (f, i) {
         f.classList.toggle('on', i === idx);
         if (i === idx) f.setAttribute('aria-current', 'step'); else f.removeAttribute('aria-current');
@@ -804,7 +818,6 @@
     sizeField();
     lastVars = '';
     writeStory(true);
-    if (pinnedStory) panMachine(storyIdx < 0 ? 0 : storyIdx); else panClones();
   }
 
   /* ── one loop: read everything, then write everything ─ */
@@ -833,6 +846,7 @@
     writeTicker(dt);
     writeBand();
     writeStory(false);
+    writeStacked();
     writeCases();
     writeMags(magRects);
     writeSpine();
